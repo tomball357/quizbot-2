@@ -32,14 +32,28 @@
 
 <hr>
 
-- List of existing messages
+<dl>
+  <dt>system</dt>
+  <dd>system prompt goes here</dd>
+
+  <dt>user</dt>
+  <dd>first user message</dd>
+
+  <dt>assistant</dt>
+  <dd>first assistant message</dd>
+
+  <% @the_quiz.messages.order(:created_at).each do |the_message| %>
+    <dt><%= the_message.role %></dt>
+    <dd><%= the_message.body %></dd>
+  <% end %>
+
+</dl>
 
 <h2>
   Add a new message
 </h2>
 
 <form action="/insert_message" method="post">
-
 
   <input type="hidden" id="quiz_id_box" name="query_quiz_id" value="<%= @the_quiz.id %>">
 
