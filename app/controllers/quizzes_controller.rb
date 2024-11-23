@@ -23,9 +23,25 @@ class QuizzesController < ApplicationController
 
     if the_quiz.valid?
       the_quiz.save
-      redirect_to("/quizzes", { :notice => "Quiz created successfully." })
+
+      # Create system message
+
+      system_message = Message.new
+      system_message.quiz_id = the_quiz.id
+      system_message.role = "system"
+      system_message.body = "You are a #{the_quiz.topic} tutor. Ask the user five questions to assess their #{the_quiz.topic} proficiency. Start with an easy question. After each answer, increase or decrease the difficulty of the next question based on how well the user answered.
+
+In the end, provide a score between 0 and 10."
+      system_message.save
+
+      # Create first user message
+
+      # Call API to get first assistant message
+
+
+      redirect_to("/quizzes/#{the_quiz.id}", { :notice => "Quiz created successfully." })
     else
-      redirect_to("/quizzes", { :alert => the_quiz.errors.full_messages.to_sentence })
+      redirect_to("/quizzes/#{the_quiz.id}", { :alert => the_quiz.errors.full_messages.to_sentence })
     end
   end
 
