@@ -61,7 +61,7 @@ In the end, provide a score between 0 and 10."
 
       api_response = client.chat(
         parameters: {
-          model: "gpt-3.5-turbo",
+          model: ENV.fetch("OPENAI_MODEL"),
           messages: message_list
         }
       )

@@ -25,6 +25,35 @@ class MessagesController < ApplicationController
 
     if the_message.valid?
       the_message.save
+
+      # Get the next AI reply and save it
+
+      message_list = []
+
+      the_message.quiz.messages.order(:created_at).each do |the_message|
+        message_hash = {
+          "role" => the_message.role,
+          "content" => the_message.body
+        }
+
+        message_list.push(message_hash)
+      end
+
+      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+
+      api_response = client.chat(
+        parameters: {
+          model: ENV.fetch("OPENAI_MODEL"),
+          messages: message_list
+        }
+      )
+
+      new_assistant_message = Message.new
+      new_assistant_message.role = "assistant"
+      new_assistant_message.quiz_id = the_message.quiz_id
+      new_assistant_message.body = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+      new_assistant_message.save
+
       redirect_to("/quizzes/#{the_message.quiz_id}", { :notice => "Message created successfully." })
     else
       redirect_to("/quizzes/#{the_message.quiz_id}", { :alert => the_message.errors.full_messages.to_sentence })
