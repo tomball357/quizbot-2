@@ -36,6 +36,12 @@ In the end, provide a score between 0 and 10."
 
       # Create first user message
 
+      user_message = Message.new
+      user_message.role = "user"
+      user_message.quiz_id = the_quiz.id
+      user_message.body = "Can you assess my #{the_quiz.topic} proficiency?"
+      user_message.save
+      
       # Call API to get first assistant message
 
 
