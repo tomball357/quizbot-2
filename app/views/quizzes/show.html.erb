@@ -33,20 +33,10 @@
 <hr>
 
 <dl>
-  <dt>system</dt>
-  <dd>system prompt goes here</dd>
-
-  <dt>user</dt>
-  <dd>first user message</dd>
-
-  <dt>assistant</dt>
-  <dd>first assistant message</dd>
-
   <% @the_quiz.messages.order(:created_at).each do |the_message| %>
     <dt><%= the_message.role %></dt>
     <dd><%= the_message.body %></dd>
   <% end %>
-
 </dl>
 
 <h2>
@@ -69,34 +59,5 @@
     Create message
   </button>
 </form>
-
-<hr>
-
-<%= client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY")) %>
-
-<% 
-# Prepare an Array of previous messages
-message_list = [
-  {
-    "role" => "system",
-    "content" => "You are a helpful assistant who talks like Shakespeare."
-  },
-  {
-    "role" => "user",
-    "content" => "Hello! What are the best spots for pizza in Chicago?"
-  }
-]
-
-# Call the API to get the next message from GPT
-api_response = client.chat(
-  parameters: {
-    model: "gpt-3.5-turbo",
-    messages: message_list
-  }
-)
-
-%>
-
-<%= api_response %>
 
 <div style="height: 500px"></div>

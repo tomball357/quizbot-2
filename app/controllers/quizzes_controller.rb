@@ -41,9 +41,38 @@ In the end, provide a score between 0 and 10."
       user_message.quiz_id = the_quiz.id
       user_message.body = "Can you assess my #{the_quiz.topic} proficiency?"
       user_message.save
-      
+
       # Call API to get first assistant message
 
+      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+
+      message_list = [
+        {
+          "role" => "system",
+          "content" => "You are a #{the_quiz.topic} tutor. Ask the user five questions to assess their #{the_quiz.topic} proficiency. Start with an easy question. After each answer, increase or decrease the difficulty of the next question based on how well the user answered.
+
+In the end, provide a score between 0 and 10."
+        },
+        {
+          "role" => "user",
+          "content" => "Can you assess my #{the_quiz.topic} proficiency?"
+        }
+      ]
+
+      api_response = client.chat(
+        parameters: {
+          model: "gpt-3.5-turbo",
+          messages: message_list
+        }
+      )
+
+      assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")
+
+      assistant_message = Message.new
+      assistant_message.role = "assistant"
+      assistant_message.quiz_id = the_quiz.id
+      assistant_message.body = assistant_content
+      assistant_message.save
 
       redirect_to("/quizzes/#{the_quiz.id}", { :notice => "Quiz created successfully." })
     else
