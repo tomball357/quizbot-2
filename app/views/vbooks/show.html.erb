@@ -1,12 +1,12 @@
 <div>
   <div>
     <h1>
-      Quiz #<%= @the_quiz.id %> details
+      VBook #<%= @the_sim.id %> details
     </h1>
 
     <div>
       <div>
-        <a href="/quizzes">
+        <a href="/vbooks">
           Go back
         </a>
       </div>
@@ -17,14 +17,14 @@
         Topic
       </dt>
       <dd>
-        <%= @the_quiz.topic %>
+        <%= @the_sim.topic %>
       </dd>
 
       <dt>
         Created at
       </dt>
       <dd>
-        <%= time_ago_in_words(@the_quiz.created_at) %> ago
+        <%= time_ago_in_words(@the_sim.created_at) %> ago
       </dd>
     </dl>
   </div>
@@ -33,7 +33,7 @@
 <hr>
 
 <dl>
-  <% @the_quiz.messages.order(:created_at).each do |the_message| %>
+  <% @the_sim.messages.order(:created_at).each do |the_message| %>
     <dt><%= the_message.role %></dt>
     <dd><%= the_message.body %></dd>
   <% end %>
@@ -45,7 +45,7 @@
 
 <form action="/insert_message" method="post">
 
-  <input type="hidden" id="quiz_id_box" name="query_quiz_id" value="<%= @the_quiz.id %>">
+  <input type="hidden" id="sim_id_box" name="query_sim_id" value="<%= @the_sim.id %>">
 
   <div>
     <label for="body_box">

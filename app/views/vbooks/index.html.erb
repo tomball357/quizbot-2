@@ -1,7 +1,7 @@
 <div>
   <div>
     <h1>
-      List of all quizzes
+      List of all VBooks
     </h1>
   </div>
 </div>
@@ -11,20 +11,20 @@
 <div>
   <div>
     <h2>
-      Add a new quiz
+      Explore a new VBook
     </h2>
 
-    <form action="/insert_quiz" method="post">
+    <form action="/insert_sim" method="post">
       <div>
         <label for="topic_box">
-          Topic
+          Original Book or Storyline:
         </label>
 
         <input type="text" id="topic_box" name="query_topic">
       </div>
 
       <button>
-        Create quiz
+        Begin your virtual journey
       </button>
     </form>
   </div>
@@ -40,7 +40,7 @@
         </th>
 
         <th>
-          Topic
+          Original Storyline
         </th>
 
         <th>
@@ -55,25 +55,25 @@
         </th>
       </tr>
 
-      <% @list_of_quizzes.each do |a_quiz| %>
+      <% @list_of_sims.each do |a_sim| %>
       <tr>
         <td>
-          <%= a_quiz.id %>
+          <%= a_sim.id %>
         </td>
 
         <td>
-          <%= a_quiz.topic %>
+          <%= a_sim.topic %>
         </td>
 
         <td>
-          <%= time_ago_in_words(a_quiz.created_at) %> ago
+          <%= time_ago_in_words(a_sim.created_at) %> ago
         </td>
         <td>
-          <%= time_ago_in_words(a_quiz.updated_at) %> ago
+          <%= time_ago_in_words(a_sim.updated_at) %> ago
         </td>
 
         <td>
-          <a href="/quizzes/<%= a_quiz.id %>">
+          <a href="/vbooks/<%= a_sim.id %>">
             Show details
           </a>
         </td>

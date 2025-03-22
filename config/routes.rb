@@ -18,24 +18,24 @@ Rails.application.routes.draw do
 
   #------------------------------
 
-  get("/", { :controller => "quizzes", :action => "index" })
+  get("/", { :controller => "sims", :action => "index" })
 
-  # Routes for the Quiz resource:
+  # Routes for the Vbook resource:
 
   # CREATE
-  post("/insert_quiz", { :controller => "quizzes", :action => "create" })
+  post("/insert_sim", { :controller => "sims", :action => "create" })
           
   # READ
-  get("/quizzes", { :controller => "quizzes", :action => "index" })
+  get("/vbooks", { :controller => "sims", :action => "index" })
   
-  get("/quizzes/:path_id", { :controller => "quizzes", :action => "show" })
+  get("/vbooks/:path_id", { :controller => "sims", :action => "show" })
   
   # UPDATE
   
-  post("/modify_quiz/:path_id", { :controller => "quizzes", :action => "update" })
+  post("/modify_sim/:path_id", { :controller => "sims", :action => "update" })
   
   # DELETE
-  get("/delete_quiz/:path_id", { :controller => "quizzes", :action => "destroy" })
+  get("/delete_sim/:path_id", { :controller => "sims", :action => "destroy" })
 
   #------------------------------
 
