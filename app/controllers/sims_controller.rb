@@ -29,10 +29,10 @@ class SimsController < ApplicationController
       system_message = Message.new
       system_message.sim_id = the_sim.id
       system_message.role = "system"
-      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, increase or decrease the difficulty of the next question based on how well the user answered.
+      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, ask a new question with a few set options to continue to evolve the scenario and allow a new simulated storyline to unfold. Continue to ask new questions until the user asks for the simulation to end.
 
 In the end, provide a unique scenario that the user must navigate."
-      system_message.save
+      #system_message.save
 
       # Create first user message
 
@@ -49,7 +49,7 @@ In the end, provide a unique scenario that the user must navigate."
       message_list = [
         {
           "role" => "system",
-          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, increase or decrease the difficulty of the next question based on how well the user answered.
+          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, ask a new question with a few set options to continue to evolve the scenario and allow a new simulated storyline to unfold. Continue to ask new questions until the user asks for the simulation to end. 
 
 In the end, provide a unique scenario that the user must navigate."
         },
