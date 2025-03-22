@@ -4,6 +4,7 @@
 #
 #  id          :bigint           not null, primary key
 #  description :text
+#  ref         :string
 #  topic       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

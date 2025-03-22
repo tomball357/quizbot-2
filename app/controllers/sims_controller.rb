@@ -20,6 +20,7 @@ class SimsController < ApplicationController
   def create
     the_sim = Sim.new
     the_sim.topic = params.fetch("query_topic")
+    the_sim.ref = params.fetch("query_ref")
 
     if the_sim.valid?
       the_sim.save
@@ -29,9 +30,8 @@ class SimsController < ApplicationController
       system_message = Message.new
       system_message.sim_id = the_sim.id
       system_message.role = "system"
-      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, ask a new question with a few set options to continue to evolve the scenario and allow a new simulated storyline to unfold. Continue to ask new questions until the user asks for the simulation to end.
+      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Based on #{the_sim.ref}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.ref}. After each answer, ask a new question with a few choices Ask a more complex question in response to the user so they always go deeper into the simulation. You must always ask the user a question related to #{the_sim.topic} and the most recent messages."
 
-In the end, provide a unique scenario that the user must navigate."
       #system_message.save
 
       # Create first user message
@@ -49,9 +49,7 @@ In the end, provide a unique scenario that the user must navigate."
       message_list = [
         {
           "role" => "system",
-          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Based on the full storyline of #{the_sim.topic}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.topic}. After each answer, ask a new question with a few set options to continue to evolve the scenario and allow a new simulated storyline to unfold. Continue to ask new questions until the user asks for the simulation to end. 
-
-In the end, provide a unique scenario that the user must navigate."
+          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Based on #{the_sim.ref}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.ref}. After each answer, ask a new question with a few choices Ask a more complex question in response to the user so they always go deeper into the simulation. You must always ask the user a question related to #{the_sim.topic} and the most recent messages."
         },
         {
           "role" => "user",
@@ -85,6 +83,7 @@ In the end, provide a unique scenario that the user must navigate."
     the_sim = Sim.where({ :id => the_id }).at(0)
 
     the_sim.topic = params.fetch("query_topic")
+    the_sim.ref = params.fetch("query_ref")
 
     if the_sim.valid?
       the_sim.save

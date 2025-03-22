@@ -17,10 +17,18 @@
     <form action="/insert_sim" method="post">
       <div>
         <label for="topic_box">
-          Original Book or Storyline:
+          Original Title:
         </label>
 
         <input type="text" id="topic_box" name="query_topic">
+      </div>
+
+      <div>
+        <label for="ref_box">
+          Reference Link:
+        </label>
+
+        <input type="text" id="ref_box" name="query_ref">
       </div>
 
       <button>
@@ -40,7 +48,7 @@
         </th>
 
         <th>
-          Original Storyline
+          Title
         </th>
 
         <th>
@@ -52,6 +60,11 @@
         </th>
 
         <th>
+          VBook
+        </th>
+
+        <th>
+          Background
         </th>
       </tr>
 
@@ -74,8 +87,12 @@
 
         <td>
           <a href="/vbooks/<%= a_sim.id %>">
-            Show details
+            Continue simulation
           </a>
+        </td>
+        <td>
+          <a href="vbooks/<%= a_sim.ref %>">
+            View context
         </td>
       </tr>
       <% end %>
