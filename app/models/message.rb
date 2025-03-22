@@ -7,10 +7,10 @@
 #  role       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  quiz_id    :integer
+#  sim_id    :integer
 #
 class Message < ApplicationRecord
-  belongs_to :quiz
+  belongs_to :sim
 
   validates :role, inclusion: { in: [ "system", "user", "assistant" ] }
   validates :role, presence: true
