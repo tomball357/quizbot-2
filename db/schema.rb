@@ -22,7 +22,7 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_151717) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "vbooks", force: :cascade do |t|
+  create_table "sims", force: :cascade do |t|
     t.string "topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

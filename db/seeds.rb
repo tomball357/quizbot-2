@@ -6,4 +6,4 @@
 #   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
 #   Character.create(name: "Luke", movie: movies.first)
 
-Sim.create!(title: "Frankenstein", description: "Mary Shelley's Frankenstein")
+Sim.create!(topic: "Frankenstein", description: "Mary Shelley's Frankenstein")
