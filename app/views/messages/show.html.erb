@@ -20,10 +20,10 @@
 
     <dl>
       <dt>
-        Quiz
+        VBook
       </dt>
       <dd>
-        <%= @the_message.quiz_id %>
+        <%= @the_message.sim_id %>
       </dd>
 
       <dt>
@@ -68,11 +68,11 @@
 
     <form action="/modify_message/<%= @the_message.id %>"  method="post" >
       <div>
-        <label for="quiz_id_box">
-          Quiz
+        <label for="sim_id_box">
+          VBook
         </label>
 
-        <input type="text" id="quiz_id_box" name="query_quiz_id" value="<%= @the_message.quiz_id %>">
+        <input type="text" id="sim_id_box" name="query_sim_id" value="<%= @the_message.sim_id %>">
       </div>
 
       <div>

@@ -7,7 +7,7 @@
 #  role       :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  sim_id    :integer
+#  quiz_id    :integer
 #
 class Message < ApplicationRecord
   belongs_to :sim

@@ -15,14 +15,14 @@ ActiveRecord::Schema[7.1].define(version: 2024_11_23_151717) do
   enable_extension "plpgsql"
 
   create_table "messages", force: :cascade do |t|
-    t.integer "quiz_id"
+    t.integer "sim_id"
     t.text "body"
     t.string "role"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "quizzes", force: :cascade do |t|
+  create_table "vbooks", force: :cascade do |t|
     t.string "topic"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
