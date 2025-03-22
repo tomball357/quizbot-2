@@ -30,7 +30,7 @@ class SimsController < ApplicationController
       system_message = Message.new
       system_message.sim_id = the_sim.id
       system_message.role = "system"
-      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Based on #{the_sim.ref}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.ref}. After each answer, ask a new question with a few choices Ask a more complex question in response to the user so they always go deeper into the simulation. You must always ask the user a question related to #{the_sim.topic} and the most recent messages."
+      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Use #{the_sim.ref}, to create a simulation for the user where they are part of the story. Choose a character to represent. Based on your character, ask the user a question about how to navigate a specific challenge in #{the_sim.ref}. Give them context. After each user answer, ask a new question and provide the user 2-4 potential responses. You must always ask the user a question related to #{the_sim.topic} and the most recent messages. Make the simulation as engaging as possible for the user."
 
       #system_message.save
 
@@ -49,7 +49,7 @@ class SimsController < ApplicationController
       message_list = [
         {
           "role" => "system",
-          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Based on #{the_sim.ref}, including key plot points, characters, locations, you must create a simulation for the user where they are part of the story. Start with an easy question about how to navigate a key challenge in #{the_sim.ref}. After each answer, ask a new question with a few choices Ask a more complex question in response to the user so they always go deeper into the simulation. You must always ask the user a question related to #{the_sim.topic} and the most recent messages."
+          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Use #{the_sim.ref}, to create a simulation for the user where they are part of the story. Choose a character to represent. Based on your character, ask the user a question about how to navigate a specific challenge in #{the_sim.ref}. Give them context. After each user answer, ask a new question and provide the user 2-4 potential responses. You must always ask the user a question related to #{the_sim.topic} and the most recent messages. Make the simulation as engaging as possible for the user."
         },
         {
           "role" => "user",
