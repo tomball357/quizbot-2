@@ -1,101 +1,32 @@
+<h1>VBook: <%= @the_sim.topic %></h1>
+<p><strong>Reference:</strong> <%= @the_sim.ref %></p>
+
+<hr>
+
+<h2>Conversation Thread</h2>
+
 <div>
-  <div>
-    <h1>
-      Message #<%= @the_message.id %> details
-    </h1>
-
-    <div>
-      <div>
-        <a href="/messages">
-          Go back
-        </a>
-      </div>
-
-      <div>
-        <a href="/delete_message/<%= @the_message.id %>">
-          Delete message
-        </a>
-      </div>
+  <% @the_sim.messages.order(:created_at).each do |message| %>
+    <div style="margin-bottom: 1.5rem; padding: 1rem; border-left: 4px solid <%= role_color(message.role) %>; background: #f9f9f9;">
+      <strong><%= message.role.capitalize %>:</strong>
+      <p><%= simple_format(message.body) %></p>
+      <small><%= time_ago_in_words(message.created_at) %> ago</small>
     </div>
-
-    <dl>
-      <dt>
-        VBook
-      </dt>
-      <dd>
-        <%= @the_message.sim_id %>
-      </dd>
-
-      <dt>
-        Body
-      </dt>
-      <dd>
-        <%= @the_message.body %>
-      </dd>
-
-      <dt>
-        Role
-      </dt>
-      <dd>
-        <%= @the_message.role %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_message.created_at) %> ago
-      </dd>
-
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_message.updated_at) %> ago
-      </dd>
-    </dl>
-  </div>
+  <% end %>
 </div>
 
 <hr>
 
+<h2>Send a Message</h2>
 
-<div>
+<form action="<%= insert_message_path %>" method="post">
+  <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+  <input type="hidden" name="query_sim_id" value="<%= @the_sim.id %>">
+
   <div>
-    <h2>
-      Edit message
-    </h2>
-
-    <form action="/modify_message/<%= @the_message.id %>"  method="post" >
-      <div>
-        <label for="sim_id_box">
-          VBook
-        </label>
-
-        <input type="text" id="sim_id_box" name="query_sim_id" value="<%= @the_message.sim_id %>">
-      </div>
-
-      <div>
-        <label for="body_box">
-          Body
-        </label>
-
-        <textarea id="body_box" name="query_body"><%= @the_message.body %></textarea>
-      </div>
-
-      <div>
-        <label for="role_box">
-          Role
-        </label>
-
-        <input type="text" id="role_box" name="query_role" value="<%= @the_message.role %>">
-      </div>
-
-      <button>
-        Update message
-      </button>
-    </form>
+    <label for="query_body">Your Message:</label><br>
+    <textarea id="query_body" name="query_body" rows="5" style="width: 100%;"></textarea>
   </div>
-</div>
 
-<hr>
+  <input type="submit" value="Send">
+</form>

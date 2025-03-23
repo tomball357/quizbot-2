@@ -1,19 +1,13 @@
 class SimsController < ApplicationController
   def index
     matching_sims = Sim.all
-
     @list_of_sims = matching_sims.order({ :created_at => :desc })
-
     render({ :template => "vbooks/index" })
   end
 
   def show
     the_id = params.fetch("path_id")
-
-    matching_sims = Sim.where({ :id => the_id })
-
-    @the_sim = matching_sims.at(0)
-
+    @the_sim = Sim.find_by(id: the_id)
     render({ :template => "vbooks/show" })
   end
 
@@ -25,80 +19,56 @@ class SimsController < ApplicationController
     if the_sim.valid?
       the_sim.save
 
-      # Create system message
+      # 1. Save the system prompt
+      system_prompt = <<~PROMPT
+        You are Zak, a Rebel officer stationed at Echo Base.
 
-      system_message = Message.new
-      system_message.sim_id = the_sim.id
-      system_message.role = "system"
-      system_message.body = "You are a virtual simulation guide for #{the_sim.topic}. Use #{the_sim.ref}, to create a simulation for the user where they are part of the story. Choose a character to represent. Based on your character, ask the user a question about how to navigate a specific challenge in #{the_sim.ref}. Give them context. After each user answer, ask a new question and provide the user 2-4 potential responses. You must always ask the user a question related to #{the_sim.topic} and the most recent messages. Make the simulation as engaging as possible for the user."
+        Let the user define who they are. Ask for advice without assumptions. Adjust tone based on user behavior (serious, funny, or unsure). Engage in open-ended strategy conversations—no fixed choices. Respond dynamically to input about defense, intel, morale, or unexpected ideas.
 
-      #system_message.save
+        Build emotional depth over time. Show appreciation early, grow the bond as conversations continue, and remember prior messages. Refer back to things the user has said to make the experience feel real.
 
-      # Create first user message
+        Make this feel like a cinematic, real-time experience. Do NOT repeat your introductory line—just continue the story naturally.
+      PROMPT
 
-      user_message = Message.new
-      user_message.role = "user"
-      user_message.sim_id = the_sim.id
-      user_message.body = "Can I be immersed in the world of #{the_sim.topic}?"
-      user_message.save
+      
 
-      # Call API to get first assistant message
+      # 2. Add Zak's first assistant message (kickoff)
+      intro_message = <<~ZAK
+        Hey, thanks for reaching out. Things are tense here at Echo Base. Our sensors are picking up strange signals, and I’ve got a bad feeling. I don’t want to overreact, but I also don’t want to be caught unprepared.
 
-      client = OpenAI::Client.new(access_token: ENV.fetch("OPENAI_API_KEY"))
+        If you were me, where would you start?
 
-      message_list = [
-        {
-          "role" => "system",
-          "content" => "You are a virtual simulation guide for #{the_sim.topic}. Use #{the_sim.ref}, to create a simulation for the user where they are part of the story. Choose a character to represent. Based on your character, ask the user a question about how to navigate a specific challenge in #{the_sim.ref}. Give them context. After each user answer, ask a new question and provide the user 2-4 potential responses. You must always ask the user a question related to #{the_sim.topic} and the most recent messages. Make the simulation as engaging as possible for the user."
-        },
-        {
-          "role" => "user",
-          "content" => "Can I be immersed in the world of #{the_sim.topic}?"
-        }
-      ]
+        Wait—who am I talking to? You ever dealt with anything like this before, or am I getting advice from a wild card?
+      ZAK
 
-      api_response = client.chat(
-        parameters: {
-          model: ENV.fetch("OPENAI_MODEL"),
-          messages: message_list
-        }
+      Message.create!(
+        sim_id: the_sim.id,
+        role: "assistant",
+        body: intro_message
       )
 
-      assistant_content = api_response.fetch("choices").at(0).fetch("message").fetch("content")
-
-      assistant_message = Message.new
-      assistant_message.role = "assistant"
-      assistant_message.sim_id = the_sim.id
-      assistant_message.body = assistant_content
-      assistant_message.save
-
-      redirect_to("/vbooks/#{the_sim.id}", { :notice => "Simulation created successfully." })
+      redirect_to("/vbooks/#{the_sim.id}", { notice: "Simulation created successfully." })
     else
-      redirect_to("/vbooks/#{the_sim.id}", { :alert => the_sim.errors.full_messages.to_sentence })
+      redirect_to("/vbooks/#{the_sim.id}", { alert: the_sim.errors.full_messages.to_sentence })
     end
   end
 
   def update
-    the_id = params.fetch("path_id")
-    the_sim = Sim.where({ :id => the_id }).at(0)
-
+    the_sim = Sim.find_by(id: params.fetch("path_id"))
     the_sim.topic = params.fetch("query_topic")
     the_sim.ref = params.fetch("query_ref")
 
     if the_sim.valid?
       the_sim.save
-      redirect_to("/vbooks/#{the_sim.id}", { :notice => "Simulation updated successfully."} )
+      redirect_to("/vbooks/#{the_sim.id}", { notice: "Simulation updated successfully." })
     else
-      redirect_to("/vbooks/#{the_sim.id}", { :alert => the_sim.errors.full_messages.to_sentence })
+      redirect_to("/vbooks/#{the_sim.id}", { alert: the_sim.errors.full_messages.to_sentence })
     end
   end
 
   def destroy
-    the_id = params.fetch("path_id")
-    the_sim = Sim.where({ :id => the_id }).at(0)
-
+    the_sim = Sim.find_by(id: params.fetch("path_id"))
     the_sim.destroy
-
-    redirect_to("/vbooks", { :notice => "Simulation deleted successfully."} )
+    redirect_to("/vbooks", { notice: "Simulation deleted successfully." })
   end
 end

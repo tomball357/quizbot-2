@@ -100,3 +100,28 @@ button {
   font-weight: bold;
   cursor: pointer;
 }
+
+/* Role-specific message styles */
+
+.message-box {
+  margin-bottom: 1.5rem;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-left: 4px solid;
+  color: black; /* default text color fallback */
+}
+
+.message-user {
+  border-color: #007bff;
+  color: #007bff;
+}
+
+.message-assistant {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.message-system {
+  border-color: #6c757d;
+  color: #6c757d;
+}

@@ -1,118 +1,70 @@
 <div>
-  <div>
-    <h1>
-      List of all messages
-    </h1>
-  </div>
+  <h1>List of All Messages</h1>
 </div>
 
 <hr>
 
 <div>
-  <div>
-    <h2>
-      Add a new message
-    </h2>
+  <h2>Add a New Message</h2>
 
-    <form action="/insert_message" method="post">
-      <div>
-        <label for="sim_id_box">
-          Quiz
-        </label>
+  <form action="/insert_message" method="post">
+    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 
-        <input type="text" id="sim_id_box" name="query_sim_id">
-      </div>
+    <div>
+      <label for="sim_id_box">VBook ID</label>
+      <input type="text" id="sim_id_box" name="query_sim_id">
+    </div>
 
-      <div>
-        <label for="body_box">
-          Body
-        </label>
+    <div>
+      <label for="body_box">Body</label>
+      <textarea id="body_box" name="query_body" rows="3"></textarea>
+    </div>
 
-        <textarea id="body_box" name="query_body" rows="3"></textarea>
-      </div>
+    <div>
+      <label for="role_box">Role</label>
+      <select id="role_box" name="query_role">
+        <option value="user">User</option>
+        <option value="assistant">Assistant</option>
+        <option value="system">System</option>
+      </select>
+    </div>
 
-      <div>
-        <label for="role_box">
-          Role
-        </label>
-
-        <input type="text" id="role_box" name="query_role">
-      </div>
-
-      <button>
-        Create message
-      </button>
-    </form>
-  </div>
+    <button>Create Message</button>
+  </form>
 </div>
 
 <hr>
+
 <div>
-  <div>
-    <table border="1">
+  <table border="1">
+    <tr>
+      <th>ID</th>
+      <th>VBook</th>
+      <th>Body</th>
+      <th>Role</th>
+      <th>Created at</th>
+      <th>Updated at</th>
+      <th>Actions</th>
+    </tr>
+
+    <% @list_of_messages.each do |a_message| %>
       <tr>
-        <th>
-          ID
-        </th>
-
-        <th>
-          VBook
-        </th>
-
-        <th>
-          Body
-        </th>
-
-        <th>
-          Role
-        </th>
-
-        <th>
-          Created at
-        </th>
-
-        <th>
-          Updated at
-        </th>
-
-        <th>
-        </th>
-      </tr>
-
-      <% @list_of_messages.each do |a_message| %>
-      <tr>
+        <td><%= a_message.id %></td>
         <td>
-          <%= a_message.id %>
-        </td>
-
-        <td>
-          <%= a_message.sim_id %>
-        </td>
-
-        <td>
-          <%= a_message.body %>
-        </td>
-
-        <td>
-          <%= a_message.role %>
-        </td>
-
-        <td>
-          <%= time_ago_in_words(a_message.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(a_message.updated_at) %> ago
-        </td>
-
-        <td>
-          <a href="/messages/<%= a_message.id %>">
-            Show details
+          <a href="/vbooks/<%= a_message.sim_id %>">
+            VBook #<%= a_message.sim_id %>
           </a>
         </td>
+        <td><%= truncate(a_message.body, length: 100) %></td>
+        <td><%= a_message.role %></td>
+        <td><%= time_ago_in_words(a_message.created_at) %> ago</td>
+        <td><%= time_ago_in_words(a_message.updated_at) %> ago</td>
+        <td>
+          <a href="/messages/<%= a_message.id %>">Show details</a>
+        </td>
       </tr>
-      <% end %>
-    </table>
-  </div>
+    <% end %>
+  </table>
 </div>
 
 <hr>

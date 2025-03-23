@@ -1,63 +1,38 @@
+<h1>VBook: <%= @the_sim.topic %></h1>
+<p><strong>Reference:</strong> <%= @the_sim.ref %></p>
+
+
+<h2>Conversation Thread</h2>
+
 <div>
-  <div>
-    <h1>
-      VBook #<%= @the_sim.id %> details
-    </h1>
-
-    <div>
-      <div>
-        <a href="/vbooks">
-          Go back
-        </a>
+  <% @the_sim.messages.order(:created_at).each do |message| %>
+  <div class="message-box message-<%= message.role %>">
+    <strong><%= message.role.capitalize %>:</strong>
+    <p><%= simple_format(message.body) %></p>
+    <% if message.image_url.present? %>
+      <div style="margin-top: 10px;">
+        <img src="<%= message.image_url %>" alt="AI-generated visual" style="max-width: 100%; border-radius: 8px;" />
       </div>
-    </div>
-
-    <dl>
-      <dt>
-        Topic
-      </dt>
-      <dd>
-        <%= @the_sim.topic %>
-      </dd>
-
-      <dt>
-        Created at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@the_sim.created_at) %> ago
-      </dd>
-    </dl>
+    <% end %>
+    <small><%= time_ago_in_words(message.created_at) %> ago</small>
   </div>
+<% end %>
+
+
 </div>
 
-<hr>
 
-<dl>
-  <% @the_sim.messages.order(:created_at).each do |the_message| %>
-    <dt><%= the_message.role %></dt>
-    <dd><%= the_message.body %></dd>
-  <% end %>
-</dl>
+<h2>Send a Message</h2>
 
-<h2>
-  Add a new message
-</h2>
-
-<form action="/insert_message" method="post">
-
-  <input type="hidden" id="sim_id_box" name="query_sim_id" value="<%= @the_sim.id %>">
+<form action="<%= insert_message_path %>" method="post">
+  <input type="hidden" name="query_sim_id" value="<%= @the_sim.id %>">
 
   <div>
-    <label for="body_box">
-      Body
-    </label>
-
-    <textarea id="body_box" name="query_body" rows="3"></textarea>
+    <label for="query_body">Your Message:</label><br>
+    <textarea id="query_body" name="query_body" rows="5" style="width: 100%;"></textarea>
   </div>
 
-  <button>
-    Create message
-  </button>
+  <input type="submit" value="Send">
 </form>
 
-<div style="height: 500px"></div>
+<%= hidden_field_tag :authenticity_token, form_authenticity_token %>
